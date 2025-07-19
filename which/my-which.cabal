@@ -1,0 +1,43 @@
+cabal-version:   3.14
+name:            which
+version:         0.1.0.0
+license:         NONE
+author:          Peter Crona
+maintainer:      petercrona89@gmail.com
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    exposed-modules:  Which
+    hs-source-dirs:   src
+    build-depends:    base, split, filepath, mtl
+    default-language: Haskell2010
+
+executable which
+    import:           warnings
+    main-is:          Main.hs
+    hs-source-dirs:   app
+    build-depends:    base, which, directory, mtl
+    default-language: Haskell2010
+
+test-suite which-test
+    type:             exitcode-stdio-1.0
+    main-is:          Spec.hs
+    hs-source-dirs:   test
+    build-depends:    base, which, HUnit, mtl
+    default-language: Haskell2010
+
+test-suite which-properties
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Properties.hs
+  build-depends:       base
+                     , which
+                     , QuickCheck
+                     , quickcheck-instances
+                     , HUnit
+                     , mtl
+  default-language:    Haskell2010
