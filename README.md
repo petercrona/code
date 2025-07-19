@@ -1,1 +1,3 @@
-# code
+# Code
+
+Repo for recreational coding.
