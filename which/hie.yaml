@@ -1,0 +1,10 @@
+cradle:
+  cabal:
+    - path: "./src"
+      component: "lib:which"
+    - path: "./app"
+      component: "exe:which"
+    - path: "./test"
+      component: "test:which-test"
+    - path: "./test"
+      component: "test:which-properties"

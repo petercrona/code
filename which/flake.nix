@@ -18,6 +18,7 @@
               pkgs.haskellPackages.cabal-install
               pkgs.haskellPackages.hlint
               pkgs.haskellPackages.ormolu
+              pkgs.haskellPackages.haskell-language-server
             ];
           };
         }
