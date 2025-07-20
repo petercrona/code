@@ -4,11 +4,10 @@ import System.Directory
 import System.Environment (getArgs, getEnv)
 import Control.Monad.Reader
 import Which
-import Data.List.NonEmpty (nonEmpty)
 
 main :: IO ()
 main = do
-  args <- nonEmpty <$> getArgs
+  args <- getArgs
   let env = AppEnv
         { aeDoesDirectoryExist = doesDirectoryExist
         , aeListDirectory      = listDirectory

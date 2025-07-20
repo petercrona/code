@@ -11,7 +11,7 @@ import Data.List (find, isSuffixOf, nubBy)
 import Data.List.Split (splitOn)
 import System.FilePath ((</>))
 import Control.Monad (filterM)
-import Data.List.NonEmpty (NonEmpty, nonEmpty, head, toList)
+import Data.List.NonEmpty (NonEmpty, nonEmpty)
 import Data.Maybe (catMaybes, mapMaybe)
 
 data AppEnv = AppEnv
@@ -23,11 +23,11 @@ data AppEnv = AppEnv
 
 type AppM = ReaderT AppEnv IO
 
-findCommands :: Maybe (NonEmpty String) -> AppM (Either String (NonEmpty FilePath))
-findCommands Nothing = return (Left "Missing arg")
-findCommands (Just commands) = do
+findCommands :: [String] -> AppM (Either String (NonEmpty FilePath))
+findCommands [] = return (Left "Missing arg")
+findCommands commands = do
   systemCommands <- getAllCommands
-  let foundCommands = mapMaybe (flip find systemCommands . commandMatch) . toList $ commands
+  let foundCommands = mapMaybe (flip find systemCommands . commandMatch) commands
   return $ maybe (Left "Didn't find command") Right (nonEmpty foundCommands)
 
   where commandMatch command = isSuffixOf ("/" <> command)

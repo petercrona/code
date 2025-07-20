@@ -21,27 +21,27 @@ testEnv = AppEnv
 
 prop_missingArg :: Property
 prop_missingArg = ioProperty $
-  runReaderT (findCommands Nothing) testEnv <&> \case
+  runReaderT (findCommands []) testEnv <&> \case
     Left err -> err == "Missing arg"
     Right _  -> False
 
 prop_notFound :: NonEmpty String -> Property
 prop_notFound cmds =
   -- Only test with commands that are not any of ["ls","cat","env"]
-  let cmds' = fmap (\s -> if s `elem` ["ls","cat","env"] then s ++ "_noexist" else s) cmds
-  in ioProperty $ runReaderT (findCommands (Just cmds')) testEnv <&> \case
+  let cmds' = fmap (\s -> if s `elem` ["ls","cat","env"] then s ++ "_noexist" else s) (toList cmds)
+  in ioProperty $ runReaderT (findCommands (cmds')) testEnv <&> \case
       Left err -> err == "Didn't find command"
       Right _  -> False
 
-prop_resultsEndWithCommand :: NonEmpty String -> Property
+prop_resultsEndWithCommand :: [String] -> Property
 prop_resultsEndWithCommand cmds =
-  ioProperty $ runReaderT (findCommands (Just cmds)) testEnv <&> \case
+  ioProperty $ runReaderT (findCommands cmds) testEnv <&> \case
     Left _      -> True
-    Right files -> and $ zipWith (\f c -> ("/" <> c) `isSuffixOf` f) (toList files) (toList cmds)
+    Right files -> and $ zipWith (\f c -> ("/" <> c) `isSuffixOf` f) (toList files) cmds
 
 prop_foundIsNotLeft :: Property
 prop_foundIsNotLeft =
-  ioProperty $ runReaderT (findCommands (Just ("ls" :| []))) testEnv <&> \case
+  ioProperty $ runReaderT (findCommands ["ls"]) testEnv <&> \case
     Right xs -> "/bin/ls" `elem` xs
     Left _   -> False
 
