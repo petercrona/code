@@ -17,6 +17,7 @@
               pkgs.haskellPackages.ghc
               pkgs.haskellPackages.cabal-install
               pkgs.haskellPackages.hlint
+              pkgs.haskellPackages.ormolu
             ];
           };
         }

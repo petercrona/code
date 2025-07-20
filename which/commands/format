@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+find . -name '*.hs' -print0 | xargs -0 ormolu -i

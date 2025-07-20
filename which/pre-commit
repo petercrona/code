@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+# Only run on staged .hs files inside "which/"
+STAGED_HS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '^which/.*\.hs$' || true)
+
+if [ -n "$STAGED_HS_FILES" ]; then
+  ./which/commands/format
+  git add $STAGED_HS_FILES
+fi
