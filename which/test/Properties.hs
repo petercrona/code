@@ -32,7 +32,7 @@ prop_notFound cmds =
   -- Only test with commands that are not any of ["ls","cat","env"]
   let cmds' = fmap (\s -> if s `elem` ["ls", "cat", "env"] then s ++ "_noexist" else s) (toList cmds)
    in ioProperty $
-        runReaderT (findCommands (cmds')) testEnv <&> \case
+        runReaderT (findCommands cmds') testEnv <&> \case
           Left err -> err == "Didn't find command"
           Right _ -> False
 
